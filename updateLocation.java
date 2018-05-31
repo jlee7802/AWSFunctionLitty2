@@ -12,16 +12,14 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 public class updateLocation implements RequestHandler<Object, String> {
 
-	//private static Logger log = Logger.getLogger(LambdaConnection.class.getName());
-
     public String handleRequest(Object input, Context context) {
-        /*String url = updateUserLocationConfig.db_url;
+        String endpoint = updateUserLocationConfig.db_url;
+        String port = updateUserLocationConfig.db_port;
+        String db_name = updateUserLocationConfig.db_name;
 		String username = updateUserLocationConfig.db_username;
-		String pw = updateUserLocationConfig.db_password;*/
+		String pw = updateUserLocationConfig.db_password;
 
-		String url = "";
-		String username = "";
-		String pw  = "";
+		String url = "jdbc:postgresql://" + endpoint + ":" + port + "/" + db_name + "?user=" + username + "&password=" + pw;
 		LambdaLogger logger = context.getLogger();
 
         try {
@@ -29,9 +27,9 @@ public class updateLocation implements RequestHandler<Object, String> {
 			Connection conn = DriverManager.getConnection(url);
 			Statement stmt = conn.createStatement();
 			LocalDateTime ldt = LocalDateTime.now();
-			stmt.executeQuery("UPDATE users SET latitude = 1, longitude = 1, updated_date = '" + String.valueOf(ldt) + "' WHERE user_id = " + "1");
+			stmt.executeQuery("UPDATE users SET latitude = 55, longitude = 66, updated_date = '" + String.valueOf(ldt) + "' WHERE user_id = " + "1");
 			conn.close();
-			return "Success "+ url + " " + username + " " + pw;
+			return "Success "+ url;
 		}
 		catch(ClassNotFoundException e){ 
 			return "classerror";
