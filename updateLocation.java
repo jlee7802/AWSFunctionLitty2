@@ -19,9 +19,9 @@ public class updateLocation implements RequestHandler<Object, String> {
 		String username = updateUserLocationConfig.db_username;
 		String pw = updateUserLocationConfig.db_password;*/
 
-		String url = "jdbc:postgresql://" + "litty.cgbqmmmv1tjp.us-east-1.rds.amazonaws.com" + ":" + "5432" + "/" + "Litty" + "?user=" + "jlee" + "&password=" + "***REMOVED***";
-		String username = "jlee";
-		String pw  = "***REMOVED***";
+		String url = "";
+		String username = "";
+		String pw  = "";
 		LambdaLogger logger = context.getLogger();
 
         try {
