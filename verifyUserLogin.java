@@ -1,9 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
-import java.time.LocalDateTime;
 import java.sql.ResultSet;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -27,6 +25,8 @@ public class verifyUserLogin implements RequestHandler<userCredential, Integer> 
 			pstmt.setString(1, input.getUsername());
    			pstmt.setString(2, input.getPassword());
    			ResultSet rs = pstmt.executeQuery();
+   			pstmt.close();
+			conn.close();
    			if(rs.next())
    				return rs.getInt("user_id");
    			else
@@ -34,7 +34,7 @@ public class verifyUserLogin implements RequestHandler<userCredential, Integer> 
 		}
 		catch(Exception e){
 			context.getLogger().log(e.getMessage());
-			return 1337;
+			return 0;
 		}
 	}
 }
