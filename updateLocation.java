@@ -1,8 +1,8 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDateTime;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 //import updateUserLocationConfig;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -22,21 +22,21 @@ public class updateLocation implements RequestHandler<userLocation, Void> {
         try{
         	Class.forName("org.postgresql.Driver");
 			Connection conn = DriverManager.getConnection(url);
-			Statement stmt = conn.createStatement();
-			LocalDateTime ldt = LocalDateTime.now();
-			stmt.executeQuery("UPDATE users SET latitude = " + input.getLatitude() + ", longitude = " + input.getLongitude() + ", updated_date = '" + String.valueOf(ldt) + "' WHERE user_id = " + input.getUserId());
-			stmt.close();
+			PreparedStatement pstmt = conn.prepareStatement("UPDATE users SET latitude = ?, longitude = ?, updated_date = ? WHERE user_id = ?");
+			Timestamp ldt = new Timestamp(new java.util.Date().getTime());
+			pstmt.setDouble(1, input.getLatitude());
+   			pstmt.setDouble(2, input.getLongitude());
+   			pstmt.setTimestamp(3, ldt);
+   			pstmt.setInt(4, input.getUserId());
+   			pstmt.execute();
+			pstmt.close();
 			conn.close();
 		}
 		catch(SQLException e){
-			/*e.toString();
-            log.warn(e.toString());
-            System.out.println(e + "\nSQLException");*/
-                            // Need to figure out what to do if there is an error
             context.getLogger().log(e.getMessage());
 		}
 		catch(Exception e){
-			context.getLogger().log("classerror1000" +e.getMessage());
+			context.getLogger().log(e.getMessage());
 		}
 
 		return null;
