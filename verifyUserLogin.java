@@ -25,8 +25,6 @@ public class verifyUserLogin implements RequestHandler<userCredential, Integer> 
 			pstmt.setString(1, input.getUsername());
    			pstmt.setString(2, input.getPassword());
    			ResultSet rs = pstmt.executeQuery();
-   			pstmt.close();
-			conn.close();
    			if(rs.next())
    				return rs.getInt("user_id");
    			else
